@@ -1,12 +1,16 @@
 package org.example;
-import org.openqa.selenium.WebDriver;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.JavascriptExecutor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class PerfilControl extends Sockpuppet{
+public class PerfilControl extends Sockpuppet {
+
     public PerfilControl(String idSesion, String plataformaObjetivo, WebDriver driver) {
         super(idSesion, plataformaObjetivo, driver);
     }
@@ -15,43 +19,59 @@ public class PerfilControl extends Sockpuppet{
     public void ejecutarEntrenamiento() {
         System.out.println("Iniciando entrenamiento: PERFIL DE CONTROL (Aleatorio).");
         try {
+            driver.manage().window().maximize();
             driver.get(plataformaObjetivo);
             Thread.sleep(4000);
 
-            // 1. Rompemos la página en blanco buscando algo genérico al azar
-            WebElement barraDeBusqueda = driver.findElement(By.name("search_query"));
-            String[] temasGenericos = {"Música", "Noticias", "Documentales", "Deportes", "Cine"};
-            String temaAzar = temasGenericos[new Random().nextInt(temasGenericos.length)];
+            WebElement barra = driver.findElement(By.name("search_query"));
+            //ACLARACIÓN: como al no iniciar sesión Youtube no te muestra videos recomendados o tendencia se tuvo que cambiar el enfoque y darle temas de búsqueda amplios.
+            String[] temas = {"Recetas de marquise de chocolate", "Técnicas de natación", "Bajo eléctrico tutoriales", "Astrología ascendente"}; //estos temas se pueden cambaiar a lo que queramos
+            String tema = temas[new Random().nextInt(temas.length)]; //random de los temas elegidos
 
-            System.out.println("El perfil Control busca un tema al azar para empezar: " + temaAzar);
-            barraDeBusqueda.sendKeys(temaAzar);
+            System.out.println("Perfil Control buscando un tema al azar para empezar: " + tema);
+            barra.sendKeys(tema);
             Thread.sleep(1000);
-            barraDeBusqueda.sendKeys(Keys.RETURN);
-            Thread.sleep(5000); // Esperamos los resultados
+            barra.sendKeys(Keys.RETURN);
+            Thread.sleep(6000);
 
-            // 2. Ahora que hay videos en pantalla, capturamos esos resultados
-            List<WebElement> videosDisponibles = driver.findElements(By.id("video-title"));
+            List<WebElement> resultados = driver.findElements(By.id("video-title"));
+            List<WebElement> videosNormales = new ArrayList<>();
+            for (WebElement res : resultados) {
+                String link = res.getAttribute("href");
+                if (link != null && !link.contains("/shorts/")) {
+                    videosNormales.add(res);
+                }
+            }
 
-            // 3. Hacemos el consumo aleatorio
-            if (!videosDisponibles.isEmpty()) {
-                WebElement videoElegido = videosDisponibles.get(new Random().nextInt(videosDisponibles.size()));
-                System.out.println("Haciendo clic aleatorio en un video...");
-                videoElegido.click();
+            if (!videosNormales.isEmpty()) {
+                int limite = Math.min(5, videosNormales.size());
+                WebElement videoElegido = videosNormales.get(new Random().nextInt(limite));
 
-                // Esperamos que cargue el video y aparezca la barra lateral de recomendaciones
-                Thread.sleep(6000);
+                System.out.println("Haciendo clic aleatorio en un video normal...");
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", videoElegido);
 
-                System.out.println("Extrayendo recomendaciones laterales post-clic...");
-                List<WebElement> recomendacionesLaterales = driver.findElements(By.id("video-title"));
+                System.out.println("Simulando visualización (engagement) y esperando barra lateral...");
+                Thread.sleep(10000);
 
-                for (WebElement tituloElemento : recomendacionesLaterales) {
-                    String textoTitulo = tituloElemento.getText();
-                    if (textoTitulo != null && !textoTitulo.trim().isEmpty()) {
-                        historialRecomendaciones.add(textoTitulo);
+                System.out.println("Extrayendo recomendaciones usando atributos ocultos...");
+                List<WebElement> recomendaciones = driver.findElements(By.xpath("//a[@id='video-title']"));
+
+                for (WebElement rec : recomendaciones) {
+                    String texto = rec.getAttribute("title");
+
+                    if (texto == null || texto.trim().isEmpty()) {
+                        texto = rec.getAttribute("innerText");
+                    }
+
+                    if (texto != null && !texto.trim().isEmpty()) {
+                        historialRecomendaciones.add(texto.trim());
                     }
                 }
-                System.out.println("Se lograron extraer " + historialRecomendaciones.size() + " videos recomendados.");
+                System.out.println("Se extrajeron " + historialRecomendaciones.size() + " videos recomendados.");
+            } else {
+                System.out.println("No se encontraron videos normales para hacer clic.");
             }
+
         } catch (Exception e) {
             System.out.println("Error en Perfil Control: " + e.getMessage());
         }

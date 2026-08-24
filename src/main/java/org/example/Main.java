@@ -12,7 +12,7 @@ public class Main {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
 
-        System.out.println("--- INICIANDO AUDITORÍA ALGORÍTMICA ---");
+        System.out.println("AUDITORÍA ALGORÍTMICA");
 
         //Perfil de Nicho
         WebDriver driverNicho = new ChromeDriver(options);

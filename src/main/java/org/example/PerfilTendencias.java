@@ -18,7 +18,7 @@ public class PerfilTendencias extends Sockpuppet{
             driver.get(plataformaObjetivo);
             Thread.sleep(4000);
 
-            // Buscamos contenido viral directamente
+            //ACLARACIÓN: como al no iniciar sesión Youtube no te muestra videos recomendados o tendencia directamente las buscamos
             WebElement barraDeBusqueda = driver.findElement(By.name("search_query"));
             String busquedaViral = "Tendencias virales Argentina";
             System.out.println("El perfil Tendencias va a buscar: " + busquedaViral);
@@ -26,7 +26,7 @@ public class PerfilTendencias extends Sockpuppet{
             barraDeBusqueda.sendKeys(busquedaViral);
             Thread.sleep(1000);
             barraDeBusqueda.sendKeys(Keys.RETURN);
-            Thread.sleep(5000); // Esperamos que carguen
+            Thread.sleep(5000);
 
             System.out.println("Extrayendo títulos del contenido viral...");
             List<WebElement> titulosDeVideos = driver.findElements(By.id("video-title"));
@@ -34,7 +34,7 @@ public class PerfilTendencias extends Sockpuppet{
             for (WebElement tituloElemento : titulosDeVideos) {
                 String textoTitulo = tituloElemento.getText();
                 if (textoTitulo != null && !textoTitulo.trim().isEmpty()) {
-                    historialRecomendaciones.add(textoTitulo);
+                    historialRecomendaciones.add(textoTitulo); //se guarda en el historial
                 }
             }
             System.out.println("Se lograron extraer " + historialRecomendaciones.size() + " videos en tendencias.");

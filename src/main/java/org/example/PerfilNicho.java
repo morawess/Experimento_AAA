@@ -18,19 +18,18 @@ public class PerfilNicho extends Sockpuppet{
             System.out.println("Navegando a: " + plataformaObjetivo);
             driver.get(plataformaObjetivo);
 
-            // Pausa para dejar que cargue la página inicial
-            Thread.sleep(4000);
 
-            // 2. Buscar la barra de búsqueda de YouTube por su nombre en el código HTML
+            Thread.sleep(4000);//pausa para dejar que cargue
+
+            //2. Se busca la barra de búsqueda de YouTube por su nombre en el código html
             WebElement barraDeBusqueda = driver.findElement(By.name("search_query"));
 
-            // 3. Definir la temática obsesiva del perfil (el "nicho")
-            String tematicaNicho = "líneas de bajo de Luis Alberto Spinetta";
+            //3. se define la temática de nicho (esta se puede cambiar)
+            String tematicaNicho = "mejores jugadas de ajedrez";
             System.out.println("El perfil " + idSesion + " va a buscar: " + tematicaNicho);
 
-            // 4. Escribir en la barra y presionar ENTER mágicamente
             barraDeBusqueda.sendKeys(tematicaNicho);
-            Thread.sleep(1000); // Pausa cortita para simular el tipeo
+            Thread.sleep(1000);
             barraDeBusqueda.sendKeys(Keys.RETURN);
 
             // Pausa para dejar que carguen los resultados de la búsqueda

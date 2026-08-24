@@ -23,7 +23,7 @@ public abstract class Sockpuppet {
     public void exportarHistorial() {
         System.out.println("Exportando historial para el perfil: "+ idSesion);
 
-        String nombreArchivo = idSesion + "_historial.csv"; //crea el nombre del archivo en base al nombre del bot
+        String nombreArchivo = idSesion + "_historial.csv";
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(nombreArchivo))) {
             writer.println("Titulo Recomendado");
