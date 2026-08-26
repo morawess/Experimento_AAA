@@ -25,7 +25,7 @@ public class PerfilNicho extends Sockpuppet{
             WebElement barraDeBusqueda = driver.findElement(By.name("search_query"));
 
             //3. se define la temática de nicho (esta se puede cambiar)
-            String tematicaNicho = "mejores jugadas de ajedrez";
+            String tematicaNicho = "líneas de bajo de Luis Alberto Spinetta";
             System.out.println("El perfil " + idSesion + " va a buscar: " + tematicaNicho);
 
             barraDeBusqueda.sendKeys(tematicaNicho);

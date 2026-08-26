@@ -21,14 +21,21 @@ def analizar_perfil(archivo_csv, nombre_perfil):
     print(f"\n--- Analizando: {nombre_perfil} ---")
 
     try:
-        df = pd.read_csv(archivo_csv)
+        # 1. Leemos el archivo como texto plano, saltando las reglas estrictas de CSV
+        with open(archivo_csv, 'r', encoding='utf-8') as f:
+            # Leemos todas las líneas, omitimos la primera (el encabezado) y limpiamos espacios
+            titulos = [linea.strip() for linea in f.readlines()[1:] if linea.strip()]
 
+        # 2. Transformar el texto en frecuencias de palabras clave
         todas_las_palabras = []
-        for titulo in df['Titulo Recomendado']:
+        for titulo in titulos:
+            # Limpiamos los títulos (minúsculas, sin símbolos)
             palabras = re.findall(r'\b\w+\b', str(titulo).lower())
+            # Filtramos palabras muy cortas (de, la, en, el, etc.)
             palabras_relevantes = [p for p in palabras if len(p) > 3]
             todas_las_palabras.extend(palabras_relevantes)
 
+        # Contamos cuántas veces aparece cada palabra
         conteo = Counter(todas_las_palabras)
         frecuencias = list(conteo.values())
 
@@ -36,10 +43,12 @@ def analizar_perfil(archivo_csv, nombre_perfil):
             print("No hay datos suficientes para analizar.")
             return
 
+        # 3. Calcular el Rango Intercuartílico (IQR)
         q1 = np.percentile(frecuencias, 25)
         q3 = np.percentile(frecuencias, 75)
         iqr = q3 - q1
 
+        # 4. Calcular el Índice de Gini
         gini = calcular_gini(frecuencias)
 
         print(f"Total de palabras/temáticas distintas: {len(frecuencias)}")

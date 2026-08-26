@@ -25,7 +25,7 @@ public class PerfilControl extends Sockpuppet {
 
             WebElement barra = driver.findElement(By.name("search_query"));
             //ACLARACIÓN: como al no iniciar sesión Youtube no te muestra videos recomendados o tendencia se tuvo que cambiar el enfoque y darle temas de búsqueda amplios.
-            String[] temas = {"Recetas de marquise de chocolate", "Técnicas de natación", "Bajo eléctrico tutoriales", "Astrología ascendente"}; //estos temas se pueden cambaiar a lo que queramos
+            String[] temas = {"Música", "Noticias", "Documentales", "Deportes", "Cine"}; //estos temas se pueden cambaiar a lo que queramos
             String tema = temas[new Random().nextInt(temas.length)]; //random de los temas elegidos
 
             System.out.println("Perfil Control buscando un tema al azar para empezar: " + tema);

@@ -1,4 +1,4 @@
-## Análisis Estadístico: Midiendo la Burbuja de Filtro
+## Análisis Estadístico: Auditoría Algorítmica Automatizada
 
 Para poder cuantificar empíricamente en qué medida la personalización extrema de contenido genera una homogeneización del gusto cultural, este proyecto audita los catálogos de recomendación extraídos utilizando dos métricas matemáticas clave.
 
@@ -29,6 +29,8 @@ Al ejecutar la simulación y pasar los historiales por nuestro script de Python,
 
 ---
 ### Ejecutar el programa
-1. Ejecutrar Main.java
-2. Abrir terminal y ejecuar comando: 
-         python analisis_burbuja.py
+1. Ejecutar Main.java
+2. Abrir terminal y ejecuar comando:
+   pip install pandas numpy
+3. Luego de la instalación ejecutar: 
+   python analisis_burbuja.py

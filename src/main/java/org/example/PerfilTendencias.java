@@ -20,7 +20,7 @@ public class PerfilTendencias extends Sockpuppet{
 
             //ACLARACIÓN: como al no iniciar sesión Youtube no te muestra videos recomendados o tendencia directamente las buscamos
             WebElement barraDeBusqueda = driver.findElement(By.name("search_query"));
-            String busquedaViral = "Tendencias virales Argentina";
+            String busquedaViral = "Tendencias virales";
             System.out.println("El perfil Tendencias va a buscar: " + busquedaViral);
 
             barraDeBusqueda.sendKeys(busquedaViral);
